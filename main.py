@@ -3,9 +3,10 @@ from tkinter import ttk # "modern" widgets
 from inst_partition import * # Instrument and Partition classes
 from functools import partial # to execute function in tkinter with parameters
 
-__VERSION__ = '0.1'
+__VERSION__ = '1.0'
 __AUTHOR__ = 'Merlet Raphaël'
 
+# Size of the window (can be resized)
 x = 1000
 y = 600
 
@@ -61,9 +62,9 @@ class Clavier(Frame): # Keys of the instrument
         self.place(relx=.05, rely=.05, relwidth=.9, relheight=.6)
     
     def create_keys(self):
-        def add_note(note, octave=5, tempo='n'):
-            self.master.partition += note+str(octave)+tempo
-            self.master.instrument.jouer(note+str(octave), .2)
+        def add_note(note, tempo='n'):
+            self.master.partition += note+str(self.master.instrument.octaves[0])+tempo
+            self.master.instrument.jouer(note+str(self.master.instrument.octaves[0]), .1)
             self.focus_set()
         
         def key_pressed(event):
@@ -74,9 +75,10 @@ class Clavier(Frame): # Keys of the instrument
             add_note(note)
             self.keys[note]['state'] = 'normal'
             self.bind(event.char, key_pressed)
+            sleep(.1)
 
         notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'] # notes de musique
-        notes_clavier = ['d', 'f', 'g', 'h', 'j', 'k', 'l'] # keyboard keys used to play
+        notes_clavier = ['d', 'f', 'g', 'h', 'j', 'k', 'l'] # keyboard keys used to play (can be customized as long as it is 7 keys long)
         self.keys = {}
         for note, notec in zip(notes, notes_clavier): # binding and creation of the keys
             self.bind(notec, key_pressed)
@@ -99,7 +101,7 @@ if __name__ == '__main__':
     print("Assets : https://feathericons.com/")
     print("===============================================================")
 
-    win = Synth()
+    win = Synth() # the instrument can be chosen here
     #win = Synth('bfx')
     win.mainloop()
     

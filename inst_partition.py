@@ -6,15 +6,16 @@ class Instrument:
         self.type = inst
         self.octaves = octaves
         self.notes = {}
+        self.playing = {}
         notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
         for o in octaves:
             for n in notes:
                 self.notes[n+str(o)] = simpleaudio.WaveObject.from_wave_file('wav/'+inst+n+str(o)+'.wav')
 
     def jouer(self, note, time):
-        playing = self.notes[note].play()
-        sleep(time)
-        playing.stop()
+        if note in self.playing.keys() and self.playing[note].is_playing():
+            self.playing[note].stop()
+        self.playing[note] = self.notes[note].play()
 
 class Partition:
     def __init__(self, notes: str, instrument, tempo=.5) -> None:
@@ -37,6 +38,7 @@ class Partition:
     def play(self):
         for note in self.music:
             self.instrument.jouer(*note)
+            sleep(note[1])
 
 if __name__ == '__main__':
     musique = "C4nC4nC4nD4nE4bD4bC4nE4nD4nD4nC4bC4nC4nC4nD4nE4bD4bC4nE4nD4nD4nC4bD4nD4nD4nD4nA3bA3bD4nC4nB3nA3nG3bC4nC4nC4nD4nE4bD4bC4nE4nD4nD4nC4b"
