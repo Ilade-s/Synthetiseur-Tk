@@ -74,7 +74,6 @@ class Clavier(Frame): # Keys of the instrument
             self.keys[note].update()
             add_note(note)
             self.keys[note]['state'] = 'normal'
-            self.bind(event.char, key_pressed)
             sleep(.1)
 
         notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'] # notes de musique
@@ -82,7 +81,8 @@ class Clavier(Frame): # Keys of the instrument
         self.keys = {}
         for note, notec in zip(notes, notes_clavier): # binding and creation of the keys
             self.bind(notec, key_pressed)
-            key = ttk.Button(self, text=note, command=partial(add_note, note), style="Keys.TButton")
+            self.bind(f'<KeyRelease-{notec}>', lambda event: self.bind(event.char, key_pressed))
+            key = ttk.Button(self, text=f' {note}\n({notec})', command=partial(add_note, note), style="Keys.TButton")
             key.place(relx=1/len(notes)*notes.index(note), rely=0, relwidth=1/len(notes), relheight=1)
             self.keys[note] = key
 
