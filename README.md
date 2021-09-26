@@ -9,4 +9,13 @@
 `class Synth(Tk):` _Global window/GUI_
 
 ## Infomations
-AUTHOR : `Merlet Raphaël` | `VERSION : 1.0`
+AUTHOR : `Merlet Raphaël` | `VERSION : 1.1`
+
+## Controls
+`keys in order (by default, can be modified):` _d, f, g, h, j, k, l_ 
+
+`play :` Enter
+
+`delete last note played :` Backspace
+
+`Reset partition :` Enter
