@@ -3,7 +3,7 @@ from tkinter import ttk # "modern" widgets
 from inst_partition import * # Instrument and Partition classes
 from functools import partial # to execute function in tkinter with parameters
 
-__VERSION__ = '1.0'
+__VERSION__ = '1.1'
 __AUTHOR__ = 'Merlet Raphaël'
 
 # Size of the window (can be resized)
