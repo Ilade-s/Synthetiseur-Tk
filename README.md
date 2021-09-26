@@ -18,4 +18,4 @@ AUTHOR : `Merlet Raphaël` | `VERSION : 1.1`
 
 `delete last note played :` Backspace
 
-`Reset partition :` Enter
+`Reset partition :` Suppr (Delete)
