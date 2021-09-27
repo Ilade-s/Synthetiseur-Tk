@@ -12,7 +12,7 @@ class Instrument:
             for n in notes:
                 self.notes[n+str(o)] = simpleaudio.WaveObject.from_wave_file('wav/'+inst+n+str(o)+'.wav')
 
-    def jouer(self, note, time):
+    def jouer(self, note):
         if note in self.playing.keys() and self.playing[note].is_playing():
             self.playing[note].stop()
         self.playing[note] = self.notes[note].play()
@@ -37,7 +37,7 @@ class Partition:
     
     def play(self):
         for note in self.music:
-            self.instrument.jouer(*note)
+            self.instrument.jouer(note[0])
             sleep(note[1])
 
 if __name__ == '__main__':
