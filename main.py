@@ -2,6 +2,7 @@ from tkinter import * # GUI
 from tkinter import ttk # "modern" widgets
 from inst_partition import * # Instrument and Partition classes
 from functools import partial # to execute function in tkinter with parameters
+from time import time # Epoch time
 
 __VERSION__ = '1.1'
 __AUTHOR__ = 'Merlet Raphaël'
@@ -17,6 +18,7 @@ class Synth(Tk): # Global window/GUI
         super().__init__()
         self.instrument = Instrument(inst, octaves)
         self.partition = ''
+        self.note_list = []
         self.clavier = Clavier(self)
         self.iconphoto(True, PhotoImage(file="Assets/music.png"))
         self.title(
@@ -28,23 +30,28 @@ class Synth(Tk): # Global window/GUI
         def play_music():
             playButton['state'] = 'active'
             playButton.update()
-            partition = Partition(self.partition, self.instrument)
-            partition.prepare()
-            partition.play()
+            for note, time in self.note_list:
+                self.instrument.jouer(note)
+                sleep(time)
+            #partition = Partition(self.partition, self.instrument)
+            #partition.prepare()
+            #partition.play()
             sleep(.1)
             playButton['state'] = 'normal'
         
         def remove_note():
             removeButton['state'] = 'active'
             removeButton.update()
-            self.partition = self.partition[:-3]
+            #self.partition = self.partition[:-3]
+            self.note_list.pop()
             sleep(.1)
             removeButton['state'] = 'normal'
         
         def reset_partition():
             resetButton['state'] = 'active'
             resetButton.update()
-            self.partition = ''
+            #self.partition = ''
+            self.note_list = []
             sleep(.1)
             resetButton['state'] = 'normal'
 
@@ -74,11 +81,17 @@ class Clavier(Frame): # Keys of the instrument
         super().__init__(master, background="#292D3E", relief=RAISED)
         self.create_keys()
         self.place(relx=.05, rely=.05, relwidth=.9, relheight=.6)
+        self.time_last_note = 0
     
     def create_keys(self):
-        def add_note(note, tempo='n'):
-            self.master.partition += note+str(self.master.instrument.octaves[0])+tempo
-            self.master.instrument.jouer(note+str(self.master.instrument.octaves[0]), .1)
+        def add_note(note):
+            if self.master.note_list:
+                ecart = time() - self.time_last_note 
+                self.master.note_list[-1][1] = ecart if ecart < 5 else 1
+            self.time_last_note = time()
+            self.master.note_list.append([note+str(self.master.instrument.octaves[0]), 0])
+            #self.master.partition += note+str(self.master.instrument.octaves[0])+ 'n'
+            self.master.instrument.jouer(note+str(self.master.instrument.octaves[0]))
             self.focus_set()
         
         def key_pressed(event):
