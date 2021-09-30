@@ -43,7 +43,8 @@ class Synth(Tk): # Global window/GUI
             removeButton['state'] = 'active'
             removeButton.update()
             #self.partition = self.partition[:-3]
-            self.note_list.pop()
+            if self.note_list:    
+                self.note_list.pop()
             sleep(.1)
             removeButton['state'] = 'normal'
         
